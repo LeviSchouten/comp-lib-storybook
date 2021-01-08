@@ -1,17 +1,18 @@
 <template>
   <div
     class="dropdown"
-    :class="{ 'is-active': isActive && !isDisabled }"
+    :class="classes"
   >
     <div class="dropdown-trigger">
       <button
         class="button"
         @click="toggleIsActive"
-        :disabled="isDisabled"
+        :disabled="disabled"
         :style="style"
       >
         <span>{{ selected }}</span>
-        <i class="fas fa-chevron-down"></i>
+        <i v-if="isUp" class="fas fa-chevron-up"></i>
+        <i v-else class="fas fa-chevron-down"></i>
       </button>
     </div>
     <div class="dropdown-menu">
@@ -42,8 +43,11 @@ export default class DropDown extends Vue {
   @Prop({ type: Array })
   readonly options!: string[];
 
-  @Prop({ type: Boolean, default: false })
-  readonly disabled!: boolean;
+  @Prop({ default: false })
+  readonly isDisabled!: boolean;
+
+  @Prop({ default: false })
+  readonly isUp!: boolean;
 
   @Prop({
     default: 'auto',
@@ -51,13 +55,20 @@ export default class DropDown extends Vue {
   })
   readonly width!: string;
 
+  get classes(): object {
+    return {
+      'is-up': this.isUp,
+      'is-active': this.isActive && !this.disabled,
+    };
+  }
+
   get style(): object {
     if (this.width === 'fixed') return { width: this.calcWidth };
     return {};
   }
 
-  get isDisabled(): boolean {
-    if (this.disabled) return true;
+  get disabled(): boolean {
+    if (this.isDisabled) return true;
     if (!this.options.length) return true;
     return false;
   }

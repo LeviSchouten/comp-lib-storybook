@@ -1,5 +1,10 @@
 <template>
-  <button class="button" :class="classes" @click="handleClick">{{ label }}</button>
+  <button
+    class="button"
+    :class="classes"
+    :disabled="isDisabled"
+    @click="handleClick"
+  >{{ label }}</button>
 </template>
 
 <script lang="ts">
@@ -49,6 +54,9 @@ export default class Button extends Vue {
 
   @Prop({ default: false })
   readonly isLoading!: boolean;
+
+  @Prop({ default: false })
+  readonly isDisabled!: boolean;
 
   get classes(): object {
     return {

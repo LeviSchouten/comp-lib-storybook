@@ -5,6 +5,7 @@ export default {
   component: DropDown,
   argTypes: {
     width: { control: { type: 'select', options: ['auto', 'fixed'] } },
+    options: { control: { type: 'array' } },
   },
 };
 
