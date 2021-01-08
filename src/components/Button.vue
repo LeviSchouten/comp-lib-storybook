@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class Button extends Vue {
   @Prop({ required: true })
   readonly label!: string;
