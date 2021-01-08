@@ -1,14 +1,31 @@
 <template>
   <div class="table-container">
-    <table class="table is-striped">
+    <table class="table" :class="classes">
       <slot />
     </table>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class StoryTable extends Vue {}
+export default class StoryTable extends Vue {
+  @Prop({ default: false })
+  readonly isStriped!: boolean;
+
+  @Prop({ default: false })
+  readonly isBordered!: boolean;
+
+  @Prop({ default: false })
+  readonly isHoverable!: boolean;
+
+  get classes(): object {
+    return {
+      'is-bordered': this.isBordered,
+      'is-hoverable': this.isHoverable,
+      'is-striped': this.isStriped,
+    };
+  }
+}
 </script>
