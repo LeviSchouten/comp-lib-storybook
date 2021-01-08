@@ -2,6 +2,7 @@
   <div
     class="dropdown"
     :class="classes"
+    v-outer-click="onOuterClick"
   >
     <div class="dropdown-trigger">
       <button
@@ -32,6 +33,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import '../directives';
 
 @Component
 export default class DropDown extends Vue {
@@ -84,6 +86,12 @@ export default class DropDown extends Vue {
 
   public toggleIsActive(): void {
     this.isActive = !this.isActive;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public onOuterClick(): void {
+    this.isActive = false;
+    // console.log('outer clicked');
   }
 
   public selectOption(option: string): void {

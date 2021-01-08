@@ -15,11 +15,7 @@ import Table from '../components/Table.vue';
 import TableHeader from '../components/TableHeader.vue';
 import TableRow from '../components/TableRow.vue';
 
-interface Header {
-  value: string;
-  ascending: boolean;
-  sortable: boolean;
-}
+import { Header } from '../interfaces';
 
 @Component({
   components: {

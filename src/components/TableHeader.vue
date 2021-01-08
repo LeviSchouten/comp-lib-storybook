@@ -14,12 +14,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-
-interface Header {
-  value: string;
-  ascending: boolean;
-  sortable: boolean;
-}
+import { Header } from '@/interfaces';
 
 @Component
 export default class TableHeader extends Vue {

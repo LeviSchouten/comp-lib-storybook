@@ -4,7 +4,9 @@
     :class="classes"
     :disabled="isDisabled"
     @click="handleClick"
-  >{{ label }}</button>
+  >
+    {{ label }}
+  </button>
 </template>
 
 <script lang="ts">
