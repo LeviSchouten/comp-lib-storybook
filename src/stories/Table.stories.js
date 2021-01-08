@@ -13,15 +13,5 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  headers: [
-    { value: 'Name', ascending: true, sortable: true },
-    { value: 'Age', ascending: false, sortable: true },
-    { value: 'Country', ascending: false, sortable: true },
-  ],
-  rows: [
-    ['John Doe', '32', 'United States'],
-    ['Jane Doe', '38', 'United States of america'],
-    ['Jane van der Doe', '32', 'United States'],
-    ['John Doe', '32', 'United States'],
-  ],
+  isStriped: true,
 };

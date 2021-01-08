@@ -46,7 +46,6 @@ export default class DropDown extends Vue {
   readonly disabled!: boolean;
 
   @Prop({
-    type: String,
     default: 'auto',
     validator: (value) => ['auto', 'fixed'].indexOf(value) !== -1,
   })
