@@ -81,21 +81,20 @@ export default class DropDown extends Vue {
       if (option.length > max) max = option.length;
     });
     if (max < 5) max = 5;
-    return `${max + 5}ch`;
+    if (max > 5 && max < 24) max += 4;
+    return `${max}ch`;
   }
 
   public toggleIsActive(): void {
     this.isActive = !this.isActive;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public onOuterClick(): void {
     this.isActive = false;
-    // console.log('outer clicked');
   }
 
   public selectOption(option: string): void {
-    this.$emit('onChange', option);
+    this.$emit('onSelect', option);
   }
 }
 </script>
