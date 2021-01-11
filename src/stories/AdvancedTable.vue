@@ -12,7 +12,7 @@
           />
           <Button
             label="Go"
-            :isDisabled="!actions.includes(selectedAction)"
+            :isDisabled="!actions.includes(selectedAction) || selected.length === 0"
             @onClick="handleAction"
           />
         </div>
@@ -25,7 +25,7 @@
           <Radio :options="statuses" :checked="checked" @onSelect="handleCheck"/>
         </div>
         <div class="column">
-          <Table :isHoverable="true" :isStriped="true">
+          <Table :isHoverable="true" :isStriped="true" :isFullwidth="true">
             <table-header :headers="headers" @onSort="sortRows"/>
             <tbody>
               <table-row-select-actions
@@ -104,7 +104,7 @@ export default class AdvancedTable extends Vue {
   }
 
   get filteredRows(): string[] {
-    const rows: string[] = [];
+    let rows: string[][] = [];
     if (this.checked.length === 0) this.checked[0] = '';
     if (this.checked.length > 1 && this.checked.includes('')) {
       const index = this.checked.indexOf('');
@@ -112,13 +112,16 @@ export default class AdvancedTable extends Vue {
     }
     this.rows.forEach((row) => {
       this.checked.forEach((c) => {
-        if (row[4].includes(c)) rows.push(row[0]);
+        if (row[4].includes(c)) rows.push(row);
       });
     });
 
-    // this.rows.filter()
+    rows = rows.filter((row) => row.join(' ').toLowerCase().includes(this.filterValue.toLowerCase()));
 
-    return rows;
+    return rows.reduce((acc, row) => {
+      acc.push(row[0]);
+      return acc;
+    }, []);
   }
 
   public handleInputChange(event: string): void {

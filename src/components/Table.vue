@@ -20,11 +20,15 @@ export default class StoryTable extends Vue {
   @Prop({ default: false })
   readonly isHoverable!: boolean;
 
+  @Prop({ default: false })
+  readonly isFullwidth!: boolean;
+
   get classes(): object {
     return {
       'is-bordered': this.isBordered,
       'is-hoverable': this.isHoverable,
       'is-striped': this.isStriped,
+      'is-fullwidth': this.isFullwidth,
     };
   }
 }
