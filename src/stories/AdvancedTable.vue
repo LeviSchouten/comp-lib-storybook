@@ -25,8 +25,13 @@
           <Radio :options="statuses" :checked="checked" @onSelect="handleCheck"/>
         </div>
         <div class="column">
-          <Table :isHoverable="true" :isStriped="true" :isFullwidth="true">
-            <table-header :headers="headers" @onSort="sortRows"/>
+          <Table :isHoverable="true" :isStriped="true">
+            <table-header-select
+              :headers="headers"
+              :isChecked="multipleChecked"
+              @onSort="sortRows"
+              @onCheck="handleMultipleSelect"
+            />
             <tbody>
               <table-row-select-actions
                 v-for="row in rows"
@@ -49,7 +54,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Table from '../components/Table.vue';
-import TableHeader from '../components/TableHeader.vue';
+import TableHeaderSelect from '../components/TableHeaderSelect.vue';
 import TableRowSelectActions from '../components/TableRowSelectActions.vue';
 import DropDown from '../components/DropDown.vue';
 import Input from '../components/Input.vue';
@@ -61,7 +66,7 @@ import { Action, Header, Row } from '../interfaces';
 @Component({
   components: {
     Table,
-    TableHeader,
+    TableHeaderSelect,
     TableRowSelectActions,
     DropDown,
     Input,
@@ -71,13 +76,12 @@ import { Action, Header, Row } from '../interfaces';
 })
 export default class AdvancedTable extends Vue {
   private headers = [
-    { value: '', ascending: false, sortable: false },
     { value: 'Address', ascending: false, sortable: true },
     { value: 'Name', ascending: false, sortable: false },
     { value: 'Email', ascending: false, sortable: false },
     { value: 'Phone', ascending: false, sortable: false },
     { value: 'Status', ascending: false, sortable: false },
-    { value: ' ', ascending: false, sortable: false },
+    { value: '', ascending: false, sortable: false },
   ]
 
   private rows = [
@@ -94,6 +98,8 @@ export default class AdvancedTable extends Vue {
   private selectedAction = 'Select action';
 
   private checked: string[] = [];
+
+  private multipleChecked = false;
 
   private selected: string[] = [];
 
@@ -118,6 +124,8 @@ export default class AdvancedTable extends Vue {
 
     rows = rows.filter((row) => row.join(' ').toLowerCase().includes(this.filterValue.toLowerCase()));
 
+    this.selected = this.selected.filter((s) => rows.some((row) => row[0] === s));
+
     return rows.reduce((acc, row) => {
       acc.push(row[0]);
       return acc;
@@ -126,15 +134,12 @@ export default class AdvancedTable extends Vue {
 
   public handleInputChange(event: string): void {
     this.filterValue = event;
-    console.log(this.filterValue);
   }
 
   public handleCheck(event: string): void {
-    console.log(this.checked);
     const index = this.checked.indexOf(event);
     if (index === -1) this.checked.push(event);
     else this.checked.splice(index, 1);
-    console.log(this.checked);
   }
 
   public sortRows(header: Header): void {
@@ -170,7 +175,12 @@ export default class AdvancedTable extends Vue {
 
   public handleMultipleAction(action: string): void {
     this.selectedAction = action;
-    console.log(this.selected);
+  }
+
+  public handleMultipleSelect(): void {
+    if (this.multipleChecked) this.selected = [];
+    else this.selected = [...this.filteredRows];
+    this.multipleChecked = !this.multipleChecked;
   }
 }
 </script>
