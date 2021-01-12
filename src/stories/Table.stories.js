@@ -1,4 +1,4 @@
-import Table from './StoryTable.vue';
+import Table from './components/StoryTable.vue';
 
 export default {
   title: 'Table',

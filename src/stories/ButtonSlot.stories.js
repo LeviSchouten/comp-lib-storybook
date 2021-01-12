@@ -1,7 +1,7 @@
 import ButtonSlot from '../components/ButtonSlot.vue';
 
 export default {
-  title: 'ButtonSlot',
+  title: 'ButtonIcon',
   component: ButtonSlot,
   argTypes: {
     color: {

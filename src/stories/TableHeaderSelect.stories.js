@@ -1,7 +1,7 @@
-import Table from './components/StoryTableHeader.vue';
+import Table from './components/StoryTableHeaderSelect.vue';
 
 export default {
-  title: 'TableHeader',
+  title: 'TableHeaderSelect',
   component: Table,
   argTypes: {
     header1: {

@@ -1,17 +1,17 @@
 <template>
-  <tr>
-    <td><input type="checkbox" :checked="isSelected" @click="handleSelectClick"></td>
-    <td v-for="column in columns" :key="column">{{ column }}</td>
-    <td>
-      <drop-down-icon
-        :options="actions"
-        :selected="selected"
-        @onSelect="handleActionsClick"
-      >
-        <i class="fas fa-ellipsis-h"></i>
-      </drop-down-icon>
-    </td>
-  </tr>
+    <tr>
+      <td><input type="checkbox" :checked="isSelected" @click="handleSelectClick"></td>
+      <td v-for="column in columns" :key="column">{{ column }}</td>
+      <td>
+        <drop-down-icon
+          :options="actions"
+          :selected="selected"
+          @onSelect="handleActionsClick"
+        >
+          <i class="fas fa-ellipsis-h"></i>
+        </drop-down-icon>
+      </td>
+    </tr>
 </template>
 
 <script lang="ts">

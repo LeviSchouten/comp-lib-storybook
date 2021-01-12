@@ -53,15 +53,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Table from '../components/Table.vue';
-import TableHeaderSelect from '../components/TableHeaderSelect.vue';
-import TableRowSelectActions from '../components/TableRowSelectActions.vue';
-import DropDown from '../components/DropDown.vue';
-import Input from '../components/Input.vue';
-import Radio from '../components/Radio.vue';
-import Button from '../components/Button.vue';
+import Table from '../../components/Table.vue';
+import TableHeaderSelect from '../../components/TableHeaderSelect.vue';
+import TableRowSelectActions from '../../components/TableRowSelectActions.vue';
+import DropDown from '../../components/DropDown.vue';
+import Input from '../../components/Input.vue';
+import Radio from '../../components/Radio.vue';
+import Button from '../../components/Button.vue';
 
-import { Action, Header, Row } from '../interfaces';
+import { Action, Header, Row } from '../../interfaces';
 
 @Component({
   components: {

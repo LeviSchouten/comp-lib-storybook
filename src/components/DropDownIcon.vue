@@ -45,6 +45,7 @@ export default class DropDownSlot extends DropDown {
 i {
   padding-left: 10px;
   font-size: 0.9rem;
+  line-height: 1.9;
 }
 
 .button {
@@ -52,5 +53,7 @@ i {
   border: none;
   background-color: inherit;
   cursor: pointer;
+  align-items: baseline;
+  height: 10px;
 }
 </style>

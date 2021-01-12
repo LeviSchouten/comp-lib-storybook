@@ -1,4 +1,4 @@
-import AdvancedTable from './AdvancedTable.vue';
+import AdvancedTable from './components/AdvancedTable.vue';
 
 export default {
   title: 'AdvancedTable',

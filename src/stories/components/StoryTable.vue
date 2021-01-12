@@ -11,11 +11,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import Table from '../components/Table.vue';
-import TableHeader from '../components/TableHeader.vue';
-import TableRow from '../components/TableRow.vue';
+import Table from '../../components/Table.vue';
+import TableHeader from '../../components/TableHeader.vue';
+import TableRow from '../../components/TableRow.vue';
 
-import { Header } from '../interfaces';
+import { Header } from '../../interfaces';
 
 @Component({
   components: {
