@@ -15,15 +15,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import TableRowSelect from './TableRowSelect.vue';
 import DropDownIcon from './DropDownIcon.vue';
+import DropDown from './DropDown.vue';
 
 import { Action } from '../interfaces';
 
 @Component({
   components: {
     DropDownIcon,
+    DropDown,
   },
 })
 export default class TableRowSelectActions extends TableRowSelect {
@@ -44,5 +46,10 @@ export default class TableRowSelectActions extends TableRowSelect {
 </script>
 
 <style scroped>
-
+i {
+  padding-left: 10px;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  cursor: pointer;
+}
 </style>

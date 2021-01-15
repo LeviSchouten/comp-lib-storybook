@@ -1,8 +1,20 @@
 import AdvancedTable from './components/AdvancedTable.vue';
 
 export default {
-  title: 'AdvancedTable',
+  title: 'Collection/AdvancedTable',
   component: AdvancedTable,
+  argTypes: {
+    actions: {
+      control: {
+        type: 'check',
+        options: [
+          'Download asbuilt',
+          'Download letter',
+          'Upload akkoordverklaring',
+        ],
+      },
+    },
+  },
 };
 
 const Template = (args, { argTypes }) => ({
@@ -13,5 +25,7 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  // isStriped: true,
+  canViewTable: true,
+  canFilterTable: true,
+  canCommitAction: true,
 };

@@ -1,20 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <advanced-table
+      :canViewTable="true"
+      :canCommitAction="true"
+      :canFilterTable="true"
+      :actions="actions"
+      :count="1000"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import AdvancedTable from './stories/components/AdvancedTable.vue';
+
+Component.registerHooks([
+  'updated',
+]);
+
+console.time('App');
 
 @Component({
   components: {
-    HelloWorld,
+    AdvancedTable,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  private actions = ['Download', 'Upload', 'Edit', 'Delete'];
+
+  // eslint-disable-next-line class-methods-use-this
+  updated() {
+    console.log('updated');
+    console.timeEnd('App');
+  }
+}
 </script>
 
 <style lang="scss">
@@ -22,8 +41,5 @@ export default class App extends Vue {}
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

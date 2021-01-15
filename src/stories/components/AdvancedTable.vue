@@ -3,7 +3,7 @@
     <div class="container">
       <div class="columns">
         <div class="column is-one-fifth" />
-        <div class="column">
+        <div class="column" v-if="canViewTable && canCommitAction">
           <drop-down
             :options="multipleActions"
             :selected="selectedAction"
@@ -18,30 +18,41 @@
         </div>
       </div>
       <div class="columns">
-        <div class="column is-one-fifth">
+        <div class="column is-one-fifth" v-if="canFilterTable && canViewTable">
           <p class="has-text-weight-semibold mb-1 mt-4">Filter by text</p>
           <Input placeholder="Search..." @onChange="handleInputChange"/>
           <p class="has-text-weight-semibold mb-1 mt-2">Filter by status</p>
           <Radio :options="statuses" :checked="checked" @onSelect="handleCheck"/>
         </div>
+        <div v-else class="column is-one-fifth"></div>
         <div class="column">
-          <Table :isHoverable="true" :isStriped="true">
+          <Table :isHoverable="true" :isStriped="true" v-if="canViewTable">
             <table-header-select
-              :headers="headers"
+              :headers="permittedHeaders"
               :isChecked="multipleChecked"
               @onSort="sortRows"
               @onCheck="handleMultipleSelect"
             />
-            <tbody>
+            <tbody v-if="canCommitAction">
               <table-row-select-actions
                 v-for="row in rows"
                 v-show="filteredRows.includes(row[0])"
-                :key="row.join('-')"
+                :key="row[0]"
                 :columns="row"
                 :actions='actions'
                 :isSelected="selected.includes(row[0])"
                 @onSelect="handleSelect"
                 @onAction="handleRowAction"
+              />
+            </tbody>
+            <tbody v-else>
+              <table-row-select
+                v-for="row in rows"
+                v-show="filteredRows.includes(row[0])"
+                :key="row[0]"
+                :columns="row"
+                :isSelected="selected.includes(row[0])"
+                @onSelect="handleSelect"
               />
             </tbody>
           </Table>
@@ -52,9 +63,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import Table from '../../components/Table.vue';
+import TableHeader from '../../components/TableHeader.vue';
 import TableHeaderSelect from '../../components/TableHeaderSelect.vue';
+import TableRowSelect from '../../components/TableRowSelect.vue';
 import TableRowSelectActions from '../../components/TableRowSelectActions.vue';
 import DropDown from '../../components/DropDown.vue';
 import Input from '../../components/Input.vue';
@@ -66,7 +79,9 @@ import { Action, Header, Row } from '../../interfaces';
 @Component({
   components: {
     Table,
+    TableHeader,
     TableHeaderSelect,
+    TableRowSelect,
     TableRowSelectActions,
     DropDown,
     Input,
@@ -84,16 +99,16 @@ export default class AdvancedTable extends Vue {
     { value: '', ascending: false, sortable: false },
   ]
 
-  private rows = [
-    ['4872  Nixon Avenue', 'M. Macdonald', 'mmacdonald@gmail.com', '0123456789', 'Sales'],
-    ['1235  Mutton Town Road', 'J.J. Rees', 'jjrees@gmail.com', '0123456789', 'Installed'],
-    ['3469  Point Street', 'D. Knowles', 'dknowles@gmail.com', '0123456789', 'Installed'],
-    ['1687  Eastland Avenue', 'G. Hyde', 'ghyde@gmail.com', '0123456789', 'Design'],
-  ]
+  // private rows = [
+  //   ['4872  Nixon Avenue', 'M. Macdonald', 'mmacdonald@gmail.com', '0123456789', 'Sales'],
+  //   ['1235  Mutton Town Road', 'J.J. Rees', 'jjrees@gmail.com', '0123456789', 'Installed'],
+  //   ['3469  Point Street', 'D. Knowles', 'dknowles@gmail.com', '0123456789', 'Installed'],
+  //   ['1687  Eastland Avenue', 'G. Hyde', 'ghyde@gmail.com', '0123456789', 'Design'],
+  // ]
+
+  private rows: string[][] = [];
 
   private statuses = ['Installed', 'Sales', 'Design'];
-
-  private actions = ['Download asbuilt', 'Upload akkoordverklaring'];
 
   private selectedAction = 'Select action';
 
@@ -105,8 +120,31 @@ export default class AdvancedTable extends Vue {
 
   private filterValue = '';
 
+  @Prop({ default: false })
+  readonly canViewTable!: boolean;
+
+  @Prop({ default: false })
+  readonly canFilterTable!: boolean;
+
+  @Prop({ default: false })
+  readonly canCommitAction!: boolean;
+
+  @Prop({})
+  readonly actions!: string[]
+
+  @Prop({ default: 10 })
+  readonly count!: number;
+
   get multipleActions(): string[] {
     return this.actions.filter((action) => action !== this.selectedAction);
+  }
+
+  get permittedHeaders(): Header[] {
+    const headers = [...this.headers];
+
+    if (!this.canCommitAction) headers.pop();
+
+    return headers;
   }
 
   get filteredRows(): string[] {
@@ -181,6 +219,50 @@ export default class AdvancedTable extends Vue {
     if (this.multipleChecked) this.selected = [];
     else this.selected = [...this.filteredRows];
     this.multipleChecked = !this.multipleChecked;
+  }
+
+  // public async getClients(): Promise<void> {
+  //   const response = await fetch('https://jsonplaceholder.typicode.com/users');
+  //   const clients = await response.json();
+  //   this.rows = clients.reduce((acc: string[][], client: any) => {
+  //     const address = `${client.address.street} ${client.address.suite} ${client.address.city}`;
+  //     const phone = client.phone.split('x')[0];
+  //     const status = this.statuses[Math.floor(Math.random() * this.statuses.length)];
+
+  //     acc.push([address, client.name, client.email, phone, status]);
+  //     return acc;
+  //   }, []);
+  // }
+
+  public async getClients(): Promise<void> {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const clients = await response.json();
+    const rows = clients.reduce((acc: string[][], client: any) => {
+      const address = `${client.address.street} ${client.address.suite} ${client.address.city}`;
+      const phone = client.phone.split('x')[0];
+      const status = this.statuses[Math.floor(Math.random() * this.statuses.length)];
+
+      acc.push([address, client.name, client.email, phone, status]);
+      return acc;
+    }, []);
+
+    let j = 0;
+    for (let i = 0; i < this.count; i += 1) {
+      const client = [...rows[j]];
+      client[0] = `(${i}) ${client[0]}`;
+      this.rows.push(client);
+      j += 1;
+      if (j >= clients.length) j = 0;
+    }
+  }
+
+  created() {
+    this.getClients();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  updated() {
+    console.timeEnd('App');
   }
 }
 </script>

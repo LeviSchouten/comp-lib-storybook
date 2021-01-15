@@ -1,9 +1,7 @@
 <template>
-  <div class="table-container">
-    <table class="table" :class="classes">
-      <slot />
-    </table>
-  </div>
+  <table class="table" :class="classes">
+    <slot />
+  </table>
 </template>
 
 <script lang="ts">

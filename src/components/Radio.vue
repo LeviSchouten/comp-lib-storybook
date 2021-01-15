@@ -31,7 +31,7 @@ export default class Radio extends Vue {
   flex-direction: column;
 }
 
-.radio {
+.radio + .radio {
   margin-left: 0;
 }
 </style>

@@ -57,6 +57,9 @@ export default class DropDown extends Vue {
   })
   readonly width!: string;
 
+  @Prop({ default: false })
+  readonly startOpened!: boolean;
+
   get classes(): object {
     return {
       'is-up': this.isUp,
